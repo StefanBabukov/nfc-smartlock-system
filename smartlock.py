@@ -121,10 +121,11 @@ def validate_rfid():
                      if check_for_token(tag, tokens_list):
                           give_access()
                      else:
-                          print("ACCESS DENIED!")
+                          print("\nACCESS DENIED!")
                 else:
                     print("Using the old spreadsheet for validation in offline mode.")
 		    offline = True
+                    time.sleep(1)
 # ------------------------------------------------------------------------
 def get_credentials():
     creds = None
