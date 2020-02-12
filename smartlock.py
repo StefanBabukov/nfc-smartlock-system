@@ -39,6 +39,14 @@ value_input_option = 'RAW'
 
 # --------------------------------------------------------------------------
 
+def sound_feedback(case):
+    if case == "open":
+        subprocess.Popen(["play","open.wav"], stdin=subprocess.PIPE, stdout = subprocess.PIPE, stderr=subprocess.PIPE)
+    if case == "denied":
+        subprocess.Popen(["play","denied.wav"], stdin=subprocess.PIPE, stdout = subprocess.PIPE, stderr=subprocess.PIPE)
+    if case == "unable":
+        subprocess.Popen(["play","unable.wav"], stdin=subprocess.PIPE, stdout = subprocess.PIPE, stderr=subprocess.PIPE)    
+    
 def internet_connection_check(message = False):
     try:
         socket.create_connection(("www.google.com",80))
@@ -46,6 +54,7 @@ def internet_connection_check(message = False):
     except:
         if message: 
              print("Error fetching the spreadsheet: \n  No internet connection, please reconnect and try again!")
+             sound_feedback("unable")
         return 503
 
 def give_access():
@@ -107,8 +116,7 @@ def validate_rfid():
             print(len(tokens_list))
             if check_for_token(tag, tokens_list):
                 #token is found
-                if internet_connection_check() == 200:
-                     offline = False
+                sound_feedback("open")
                 give_access()
                 
             else:
@@ -119,8 +127,10 @@ def validate_rfid():
 		     tokens_list = get_valid_tokens()
                      offline = False
                      if check_for_token(tag, tokens_list):
+ 	                  sound_feedback("open")
                           give_access()
                      else:
+                          sound_feedback("denied")
                           print("\nACCESS DENIED!")
                 else:
                     print("Using the old spreadsheet for validation in offline mode.")
