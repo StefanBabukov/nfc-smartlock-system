@@ -54,7 +54,6 @@ def internet_connection_check(message = False):
     except:
         if message: 
              print("Error fetching the spreadsheet: \n  No internet connection, please reconnect and try again!")
-             sound_feedback("unable")
         return 503
 
 def give_access():
@@ -122,7 +121,7 @@ def validate_rfid():
             else:
                 #updating the list and trying again 
                 print("Unable to authenticate, fetching the spreadsheet and trying again...")
-               
+                sound_feedback("unable")
 		if internet_connection_check(message=True) == 200:
 		     tokens_list = get_valid_tokens()
                      offline = False
